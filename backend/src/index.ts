@@ -1,4 +1,4 @@
-import express, { Response } from 'express';
+import express, { Response, Request } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
@@ -11,7 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get('/ping', (_, res: Response) => {
+app.get('/ping', (req: Request, res: Response) => {
   res.json({ pong: 'pong' });
 });
 
