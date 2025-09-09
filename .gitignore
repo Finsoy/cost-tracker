@@ -7,6 +7,8 @@ frontend/node_modules
 
 # локальные env файлы
 backend/.env
+backend/.env.production
 frontend/.env
+frontend/.env.production
 
 .history
