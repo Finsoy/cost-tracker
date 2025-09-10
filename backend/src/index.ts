@@ -10,7 +10,7 @@ const PORT: number = parseInt(process.env?.['PORT'] ?? '3000');
 
 const app = express();
 
-const allowedOrigins = ['http://localhost:5173', 'https://cost-tracker-ten.vercel.app/'];
+const allowedOrigins = ['http://localhost:5173', 'https://cost-tracker-ten.vercel.app'];
 
 app.use(
   cors({
