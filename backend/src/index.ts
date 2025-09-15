@@ -3,10 +3,11 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 import userRouter from './routes/user';
+import { authRouter } from './routes/auth';
 
 dotenv.config();
 
-const PORT: number = parseInt(process.env?.['PORT'] ?? '3000');
+const PORT: number = parseInt(process.env['PORT'] ?? '3000');
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.get('/ping', (req: Request, res: Response) => {
 });
 
 app.use('/users', userRouter);
+app.use('/auth', authRouter);
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);

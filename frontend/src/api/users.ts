@@ -1,11 +1,5 @@
 import api from './axios';
-
-export interface User {
-  id: number;
-  email: string;
-  name?: string;
-  password?: string;
-}
+import type { User } from './types';
 
 export const getUsers = async () => {
   const res = await api.get('/users');

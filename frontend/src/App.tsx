@@ -1,16 +1,17 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Login, Main, NotFound } from './pages';
+import { Signup } from './pages/Signup';
 
 function App() {
   return (
     <div className="wrapper">
       <Router>
         <Routes>
-          {/* Главная страница */}
           <Route path="/" element={<Main />} />
 
-          {/* Логин */}
           <Route path="/login" element={<Login />} />
+
+          <Route path="/signup" element={<Signup />} />
 
           {/* 404 – всегда в конце */}
           <Route path="*" element={<NotFound />} />
