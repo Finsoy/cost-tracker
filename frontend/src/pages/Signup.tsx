@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { register } from '../api/auth';
+import { SignupForm } from '@/components/SignupForm';
 
 export const Signup = () => {
   const [email, setEmail] = useState<string>('');
@@ -14,22 +15,7 @@ export const Signup = () => {
 
   return (
     <>
-      <h1>Sign up</h1>
-      <label htmlFor="email">Email</label>
-      <input type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-
-      <label htmlFor="name">Name</label>
-      <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} />
-
-      <label htmlFor="password">Password</label>
-      <input
-        type="password"
-        name="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-
-      <button onClick={buttonHandler}>Send</button>
+      <SignupForm></SignupForm>
     </>
   );
 };

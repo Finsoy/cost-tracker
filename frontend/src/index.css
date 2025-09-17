@@ -1,16 +1,36 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  box-sizing: border-box;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: var(--background);
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --background: oklch(0.14 0 0);
+  --background-gray: oklch(20.5% 0 0);
+  --primary: oklch(92.2% 0 0);
+  --primary-foreground: oklch(20.5% 0 0);
+  --input: oklch(100% 0 0 / 0.15);
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-background-gray: var(--background-gray);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-input: var(--input);
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
 }
 
 a {
@@ -34,7 +54,6 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -48,19 +67,6 @@ button:focus-visible {
 
 .wrapper {
   max-width: 1280px;
-  text-align: center;
-  margin: auto auto;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+  margin: 0 auto;
+  height: 100%;
 }
