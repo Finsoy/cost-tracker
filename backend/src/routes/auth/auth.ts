@@ -10,12 +10,14 @@ authRouter.post('/register', async (req, res) => {
   try {
     const { email, password, name } = req.body;
 
-    if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
+    if (!email || !password)
+      return res.status(400).json({ errorMessage: 'Email and password required' });
 
     const isExistUser = await prisma.user.findUnique({ where: { email } });
     console.log('🚀 ~ isExistUser:', isExistUser);
 
-    if (isExistUser) return res.status(409).json({ error: 'User already exists' });
+    if (isExistUser)
+      return res.status(409).json({ field: 'email', errorMessage: 'User already exists' });
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -34,6 +36,6 @@ authRouter.post('/register', async (req, res) => {
     return res.json({ user });
   } catch (e) {
     console.error(e);
-    return res.status(500).json({ error: `Server error` });
+    return res.status(500).json({ errorMessage: `Server error` });
   }
 });

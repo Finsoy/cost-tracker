@@ -1,11 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Login, Main, NotFound } from './pages';
 import { Signup } from './pages/Signup';
+import { Navbar } from './components/navigation';
 
 function App() {
   return (
     <div className="wrapper">
       <Router>
+        <Navbar />
         <Routes>
           <Route path="/" element={<Main />} />
 
