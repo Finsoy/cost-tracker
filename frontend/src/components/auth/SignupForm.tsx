@@ -9,11 +9,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { SignupSchema, type SignupFormValues } from './Schemas';
-import { registerUser } from '@/api/auth';
 import type { AxiosError } from 'axios';
 import { DEFAULT_ERROR_MESSAGE } from '@/api';
 import type { ServerError } from './types';
 import { ErrorMessageForForm } from '../ui/ErorrMessageForForm';
+import { useAuth } from '@/contexts/auth';
 
 export function SignupForm({ className, ...props }: React.ComponentProps<'div'>) {
   const {
@@ -25,10 +25,11 @@ export function SignupForm({ className, ...props }: React.ComponentProps<'div'>)
     resolver: zodResolver(SignupSchema),
   });
 
+  const { register: registerUser } = useAuth();
+
   const onSubmit = async (data: SignupFormValues) => {
     try {
-      const response = await registerUser(data);
-      console.log('🚀 ~ response:', response);
+      await registerUser(data);
     } catch (err) {
       const error = err as AxiosError<ServerError>;
 

@@ -1,7 +1,9 @@
+import jwt from 'jsonwebtoken';
 import { Router } from 'express';
 import bcrypt from 'bcrypt';
 import { PrismaClient } from '@prisma/client';
 import { cookieOptions, signAccessToken, signRefreshToken } from './utils';
+import { ACCESS_SECRET, REFRESH_SECRET } from './constants';
 
 const prisma = new PrismaClient();
 export const authRouter = Router();
@@ -21,7 +23,7 @@ authRouter.post('/register', async (req, res) => {
 
     const user = await prisma.user.create({
       data: { email, password: hashedPassword, name },
-      select: { id: true, email: true, name: true, createdAt: true },
+      select: { id: true, email: true, name: true },
     });
 
     console.log('user from prisma: ', user);
@@ -64,11 +66,63 @@ authRouter.post('/login', async (req, res) => {
       id: user.id,
       email: user.email,
       name: user.name,
-      createdAt: user.createdAt,
     };
     return res.json({ user: safeUser });
   } catch (e) {
     console.error(e);
     return res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// ME — проверить текущего пользователя по accessToken
+authRouter.get('/me', async (req, res) => {
+  try {
+    console.log('cookies: ', req.cookies);
+
+    const token = req.cookies?.accessToken;
+    if (!token) return res.status(401).json({ error: 'Not authenticated' });
+
+    const payload = jwt.verify(token, ACCESS_SECRET) as { userId: number };
+
+    const user = await prisma.user.findUnique({
+      where: { id: payload.userId },
+      select: { id: true, email: true, name: true, createdAt: true },
+    });
+    if (!user) return res.status(401).json({ error: 'User not found' });
+
+    return res.json({ user });
+  } catch (e) {
+    console.error('me err', e);
+    return res.status(401).json({ error: 'Not authenticated' });
+  }
+});
+
+authRouter.get('/refresh', async (req, res) => {
+  try {
+    const rtoken = req.cookies?.refreshToken;
+    if (!rtoken) return res.status(401).json({ error: 'No refresh token' });
+
+    const payload = jwt.verify(rtoken, REFRESH_SECRET) as { userId: number };
+
+    const accessToken = signAccessToken({ userId: payload.userId });
+
+    res.cookie('accessToken', accessToken, cookieOptions(60 * 15)); // 15 min;
+
+    return res.json({ ok: true });
+  } catch (e) {
+    console.error(e);
+    return res.status(401).json({ error: 'Invalid refresh token' });
+  }
+});
+
+authRouter.get('/logout', async (req, res) => {
+  try {
+    res.clearCookie('accessToken', { path: '/' });
+    res.clearCookie('refreshToken', { path: '/' });
+
+    return res.status(200).json({ ok: true });
+  } catch (e) {
+    console.error(e);
+    return res.status(400).json({ error: 'Something went wrong, try again later.' });
   }
 });

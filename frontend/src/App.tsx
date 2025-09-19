@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Login, Main, NotFound } from './pages';
 import { Signup } from './pages/Signup';
 import { Navbar } from './components/navigation';
+import { ProtectedAuthRoute } from './components/auth';
 
 function App() {
   return (
@@ -9,7 +10,14 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
-          <Route path="/" element={<Main />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedAuthRoute>
+                <Main />
+              </ProtectedAuthRoute>
+            }
+          />
 
           <Route path="/login" element={<Login />} />
 

@@ -11,7 +11,7 @@ import type { AxiosError } from 'axios';
 import type { ServerError } from './types';
 import { DEFAULT_ERROR_MESSAGE } from '@/api';
 import { ErrorMessageForForm } from '../ui/ErorrMessageForForm';
-import { loginUser } from '@/api/auth';
+import { useAuth } from '@/contexts/auth';
 
 export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) {
   const {
@@ -21,10 +21,11 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
     setError,
   } = useForm<LoginFormValues>({ resolver: zodResolver(LoginSchema) });
 
+  const { login } = useAuth();
+
   const onSubmit = async (data: LoginFormValues) => {
     try {
-      const response = await loginUser(data);
-      console.log('🚀 ~ response:', response);
+      await login(data);
     } catch (err) {
       const error = err as AxiosError<ServerError>;
 
@@ -55,6 +56,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-4">
               <div className="grid gap-2">
+                {/* // TODO: create FormInput with logic label and erorr */}
                 <Label htmlFor="email">Email *</Label>
                 <Input id="email" type="email" placeholder="m@example.com" {...register('email')} />
                 {errors.email?.message && <ErrorMessageForForm text={errors.email.message} />}
