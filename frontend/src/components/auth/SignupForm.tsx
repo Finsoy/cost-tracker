@@ -8,15 +8,12 @@ import { Link } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { SignupSchema, type SignupFormValues } from './SignupSchema';
+import { SignupSchema, type SignupFormValues } from './Schemas';
 import { registerUser } from '@/api/auth';
 import type { AxiosError } from 'axios';
 import { DEFAULT_ERROR_MESSAGE } from '@/api';
-
-type ServerError = {
-  field?: keyof SignupFormValues;
-  errorMessage?: string;
-};
+import type { ServerError } from './types';
+import { ErrorMessageForForm } from '../ui/ErorrMessageForForm';
 
 export function SignupForm({ className, ...props }: React.ComponentProps<'div'>) {
   const {
@@ -36,7 +33,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<'div'>)
       const error = err as AxiosError<ServerError>;
 
       if (error?.response?.data) {
-        const { errorMessage, field } = error.response.data;
+        const { error: errorMessage, field } = error.response.data;
 
         setError(field ?? 'root', {
           type: 'server',
@@ -64,20 +61,18 @@ export function SignupForm({ className, ...props }: React.ComponentProps<'div'>)
               <div className="grid gap-2">
                 <Label htmlFor="email">Email *</Label>
                 <Input id="email" placeholder="m@example.com" {...register('email')} />
-                {errors.email?.message && <p className="text-red-400">{errors.email.message}</p>}
+                {errors.email?.message && <ErrorMessageForForm text={errors.email.message} />}
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="password">Password *</Label>
                 <Input id="password" type="password" {...register('password')} />
-                {errors.password?.message && (
-                  <p className="text-red-400">{errors.password.message}</p>
-                )}
+                {errors.password?.message && <ErrorMessageForForm text={errors.password.message} />}
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="name">Name</Label>
                 <Input id="name" type="text" {...register('name')} />
               </div>
-              {errors.root?.message && <p className="text-red-400">{errors.root.message}</p>}
+              {errors.root?.message && <ErrorMessageForForm text={errors.root.message} />}
               <div className="flex flex-col gap-3">
                 <Button
                   type="submit"
@@ -86,7 +81,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<'div'>)
                 >
                   Sign up
                 </Button>
-                <Button variant="outline" className="w-full">
+                <Button variant="outline" className="w-full" disabled>
                   Login with Google
                 </Button>
               </div>

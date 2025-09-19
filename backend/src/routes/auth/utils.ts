@@ -7,11 +7,10 @@ import {
   REFRESH_TOKEN_EXPIRES,
 } from './constants';
 
-
-export const coockieOptions = (maxAgeSeconds: number) => ({
+export const cookieOptions = (maxAgeSeconds: number) => ({
   httpOnly: true,
   secure: isProd,
-  sameSite: isProd ? 'none' as const : 'lax' as const,
+  sameSite: isProd ? ('none' as const) : ('lax' as const),
   maxAge: maxAgeSeconds * 1000,
   path: '/',
 });

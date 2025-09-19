@@ -6,3 +6,9 @@ export const registerUser = async (data: Omit<User, 'id'>) => {
 
   return res.data;
 };
+
+export const loginUser = async (data: Omit<User, 'id'>) => {
+  const res = await api.post('/auth/login', data);
+
+  return res.data;
+};
