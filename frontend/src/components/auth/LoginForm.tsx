@@ -12,6 +12,7 @@ import type { ServerError } from './types';
 import { DEFAULT_ERROR_MESSAGE } from '@/api';
 import { ErrorMessageForForm } from '../ui/ErorrMessageForForm';
 import { useAuth } from '@/contexts/auth';
+import { Navigate } from 'react-router-dom';
 
 export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) {
   const {
@@ -21,7 +22,9 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
     setError,
   } = useForm<LoginFormValues>({ resolver: zodResolver(LoginSchema) });
 
-  const { login } = useAuth();
+  const { login, user } = useAuth();
+
+  if (user) return <Navigate to="/" replace />;
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
