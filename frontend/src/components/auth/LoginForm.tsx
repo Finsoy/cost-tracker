@@ -12,7 +12,7 @@ import type { ServerError } from './types';
 import { DEFAULT_ERROR_MESSAGE } from '@/api';
 import { ErrorMessageForForm } from '../ui/ErorrMessageForForm';
 import { useAuth } from '@/contexts/auth';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) {
   const {
@@ -22,6 +22,8 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
     setError,
   } = useForm<LoginFormValues>({ resolver: zodResolver(LoginSchema) });
 
+  const navigate = useNavigate();
+
   const { login, user } = useAuth();
 
   if (user) return <Navigate to="/" replace />;
@@ -29,6 +31,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
   const onSubmit = async (data: LoginFormValues) => {
     try {
       await login(data);
+      navigate('/');
     } catch (err) {
       const error = err as AxiosError<ServerError>;
 

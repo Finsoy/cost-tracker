@@ -6,9 +6,9 @@ import { ProtectedAuthRoute } from './components/auth';
 
 function App() {
   return (
-    <div className="wrapper">
+    <>
       <Router>
-        <Navbar />
+        {/* <Navbar /> */}
         <Routes>
           <Route
             path="/"
@@ -27,7 +27,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
-    </div>
+    </>
   );
 }
 
