@@ -13,17 +13,10 @@ import {
   SidebarFooter,
 } from '@/components/ui/sidebar';
 import { CreateProjectModal } from '../modals';
-
-// Menu items.
-const items = [
-  {
-    title: 'Project 1',
-    url: '#',
-    icon: Folder,
-  },
-];
+import { useProjects } from '@/contexts/project/ProjectContext';
 
 export const AppSidebar = () => {
+  const { projects } = useProjects();
   const handleDelete = () => {
     console.log('delete project');
   };
@@ -41,14 +34,14 @@ export const AppSidebar = () => {
               <SidebarGroupLabel>Projects</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
-                  {items.map((item) => (
-                    <SidebarMenuItem key={item.title}>
+                  {projects?.map((proj) => (
+                    <SidebarMenuItem key={proj.id}>
                       <SidebarMenuButton asChild>
-                        <a href={item.url} className="grid grid-cols-[auto_auto_1fr] items-center">
-                          <item.icon />
-                          <span>{item.title}</span>
+                        <p className="grid grid-cols-[auto_auto_1fr] items-center">
+                          <Folder />
+                          <span>{proj.name}</span>
                           <MinusIcon onClick={handleDelete} className="justify-self-end" />
-                        </a>
+                        </p>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   ))}
