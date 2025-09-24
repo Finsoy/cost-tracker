@@ -1,5 +1,3 @@
-import { AppSidebar } from '@/components/navigation';
-
 export const Main = () => {
   return (
     <div>

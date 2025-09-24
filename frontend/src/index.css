@@ -23,6 +23,7 @@
   --muted: oklch(26.9% 0 0);
   --muted-foreground: oklch(70.8% 0 0);
   --violet: oklch(60.6% 0.25 292.717);
+  --violet-hover: var(--color-violet-600);
 
   --sidebar: hsl(240 5.9% 10%);
   --sidebar-foreground: hsl(240 4.8% 95.9%);
@@ -45,6 +46,7 @@
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-violet: var(--violet);
+  --color-violet-hover: var(--color-violet-hover);
 }
 
 html,
