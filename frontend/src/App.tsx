@@ -1,14 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Login, Main, NotFound } from './pages';
 import { Signup } from './pages/Signup';
-import { Navbar } from './components/navigation';
 import { ProtectedAuthRoute } from './components/auth';
 
 function App() {
   return (
     <>
       <Router>
-        {/* <Navbar /> */}
         <Routes>
           <Route
             path="/"

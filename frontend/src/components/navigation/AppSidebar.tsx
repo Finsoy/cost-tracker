@@ -1,4 +1,4 @@
-import { Folder, PlusIcon, MinusIcon } from 'lucide-react';
+import { Folder } from 'lucide-react';
 
 import {
   Sidebar,
@@ -14,11 +14,14 @@ import {
 } from '@/components/ui/sidebar';
 import { CreateProjectModal } from '../modals';
 import { useProjects } from '@/contexts/project/ProjectContext';
+import { DeleteProjectModal } from '../modals/DeleteProjectModal';
 
 export const AppSidebar = () => {
-  const { projects } = useProjects();
-  const handleDelete = () => {
+  const { projects, deleteProject } = useProjects();
+
+  const handleDelete = (id: string) => {
     console.log('delete project');
+    deleteProject(id);
   };
   return (
     <>
@@ -37,10 +40,10 @@ export const AppSidebar = () => {
                   {projects?.map((proj) => (
                     <SidebarMenuItem key={proj.id}>
                       <SidebarMenuButton asChild>
-                        <p className="grid grid-cols-[auto_auto_1fr] items-center">
+                        <p className="grid grid-cols-[auto_auto_1fr] items-center cursor-pointer h-[40px]">
                           <Folder />
                           <span>{proj.name}</span>
-                          <MinusIcon onClick={handleDelete} className="justify-self-end" />
+                          <DeleteProjectModal handleDelete={() => handleDelete(proj.id)} />
                         </p>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
