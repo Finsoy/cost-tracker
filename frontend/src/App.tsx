@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Login, Main, NotFound } from './pages';
+import { Login, Main, NotFound, Project } from './pages';
 import { Signup } from './pages/Signup';
 import { ProtectedAuthRoute } from './components/auth';
+import { SidebarLayout } from './layouts';
 
 function App() {
   return (
@@ -9,19 +10,35 @@ function App() {
       <Router>
         <Routes>
           <Route
-            path="/"
             element={
               <ProtectedAuthRoute>
-                <Main />
+                <SidebarLayout />
               </ProtectedAuthRoute>
             }
-          />
+          >
+            <Route
+              path="/"
+              element={
+                <ProtectedAuthRoute>
+                  <Main />
+                </ProtectedAuthRoute>
+              }
+            />
+
+            <Route
+              path="/projects/:id"
+              element={
+                <ProtectedAuthRoute>
+                  <Project />
+                </ProtectedAuthRoute>
+              }
+            />
+          </Route>
 
           <Route path="/login" element={<Login />} />
 
           <Route path="/signup" element={<Signup />} />
 
-          {/* 404 – всегда в конце */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>

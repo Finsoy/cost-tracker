@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant light (&:is(.light *));
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -88,6 +88,18 @@ button:focus-visible {
   --sidebar-accent-foreground: hsl(240 5.9% 10%);
   --sidebar-border: hsl(220 13% 91%);
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
+
+  /* App/base palette for light mode */
+  --background: oklch(98% 0 0);
+  --background-gray: oklch(96% 0 0);
+  --primary: oklch(20% 0 0);
+  --primary-foreground: oklch(98% 0 0);
+  --input: oklch(0% 0 0 / 0.08);
+  --secondary: oklch(92% 0 0);
+  --secondary-foreground: oklch(20% 0 0);
+  --muted: oklch(92% 0 0);
+  --muted-foreground: oklch(35% 0 0);
+  --violet: oklch(55% 0.25 292.717);
 }
 
 @theme inline {
