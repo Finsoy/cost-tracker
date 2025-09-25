@@ -9,6 +9,7 @@ export const register = async (data: Omit<FullUser, 'id'>): Promise<{ user: User
 
 export const login = async (data: Omit<FullUser, 'id' | 'name'>): Promise<{ user: User }> => {
   const res = await api.post('/auth/login', data);
+  console.log('🚀 ~ login ~ res:', res);
 
   return res.data;
 };

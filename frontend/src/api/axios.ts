@@ -28,33 +28,41 @@ api.interceptors.response.use(
   (res) => res,
   async (err) => {
     const originalRequest = err.config as AxiosRequestConfigWithRetry;
+    const status = err.response?.status;
+    console.log('🚀 ~ status:', status);
+    const url = originalRequest?.url || '';
 
-    if (
-      err.response?.status === 401 &&
-      !originalRequest._retry &&
-      originalRequest?.url !== '/auth/refresh'
-    ) {
-      if (isRefreshing) {
-        return new Promise((resolve, reject) => {
-          failedQueue.push({ resolve, reject });
-        })
-          .then(() => api(originalRequest))
-          .catch((e) => Promise.reject(e));
-      }
+    const isAuthRoute =
+      url.includes('/auth/login') ||
+      url.includes('/auth/register') ||
+      url.includes('/auth/refresh');
 
-      originalRequest._retry = true;
-      isRefreshing = true;
+    if (status !== 401 || isAuthRoute || originalRequest._retry) {
+      console.log('isAuthRoute', isAuthRoute);
 
-      try {
-        await refresh();
-        processQueue(null, true);
-        return api(originalRequest);
-      } catch (e) {
-        processQueue(e, null);
-        throw e;
-      } finally {
-        isRefreshing = false;
-      }
+      return Promise.reject(err);
+    }
+
+    if (isRefreshing) {
+      return new Promise((resolve, reject) => {
+        failedQueue.push({ resolve, reject });
+      })
+        .then(() => api(originalRequest))
+        .catch((e) => Promise.reject(e));
+    }
+
+    originalRequest._retry = true;
+    isRefreshing = true;
+
+    try {
+      await refresh();
+      processQueue(null, true);
+      return api(originalRequest);
+    } catch (e) {
+      processQueue(e, null);
+      return Promise.reject(e);
+    } finally {
+      isRefreshing = false;
     }
   },
 );

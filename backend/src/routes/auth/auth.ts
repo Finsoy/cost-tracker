@@ -48,12 +48,13 @@ authRouter.post('/login', async (req, res) => {
     const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user)
-      return res.status(401).json({ field: 'email', error: "User with this email doesn't exist" });
+      return res.status(400).json({ field: 'email', error: "User with this email doesn't exist" });
 
     const isCorrectPassword = await bcrypt.compare(password, user.password);
+    console.log('🚀 ~ isCorrectPassword:', isCorrectPassword);
 
     if (!isCorrectPassword)
-      return res.status(401).json({ field: 'password', error: 'Incorrect password' });
+      return res.status(400).json({ field: 'password', error: 'Incorrect password' });
 
     const accessToken = signAccessToken({ userId: user.id });
     const refreshToken = signRefreshToken({ userId: user.id });
@@ -67,6 +68,7 @@ authRouter.post('/login', async (req, res) => {
       email: user.email,
       name: user.name,
     };
+    console.log('🚀 ~ safeUser:', safeUser);
     return res.json({ user: safeUser });
   } catch (e) {
     console.error(e);
