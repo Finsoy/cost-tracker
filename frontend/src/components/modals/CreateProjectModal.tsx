@@ -28,7 +28,15 @@ export const CreateProjectModal = () => {
       }
       triggerClassName="flex items-start justify-start bg-violet px-3 py-2  hover:bg-violet/80 w-full"
       title="Project Name"
-      description={<Input id="name" type="text" value={value} onChange={handleValueChange} />}
+      description={
+        <Input
+          id="name"
+          type="text"
+          placeholder="Enter the name..."
+          value={value}
+          onChange={handleValueChange}
+        />
+      }
       confirmButtonText="Create"
       rejectButtonText="Cancel"
       handleConfirm={handleAddProject}

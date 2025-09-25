@@ -29,7 +29,6 @@ api.interceptors.response.use(
   async (err) => {
     const originalRequest = err.config as AxiosRequestConfigWithRetry;
     const status = err.response?.status;
-    console.log('🚀 ~ status:', status);
     const url = originalRequest?.url || '';
 
     const isAuthRoute =
@@ -38,8 +37,6 @@ api.interceptors.response.use(
       url.includes('/auth/refresh');
 
     if (status !== 401 || isAuthRoute || originalRequest._retry) {
-      console.log('isAuthRoute', isAuthRoute);
-
       return Promise.reject(err);
     }
 
