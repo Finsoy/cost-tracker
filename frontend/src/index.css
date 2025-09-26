@@ -122,7 +122,7 @@ button:focus-visible {
 @layer base {
   *,
   ::backdrop,
-  :after,
+  :after, 
   :before {
     box-sizing: border-box;
     border: 0 solid;

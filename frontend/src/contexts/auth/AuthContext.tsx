@@ -12,7 +12,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const fetchMe = async () => {
     try {
       const res = await authApi.me();
-      console.log('me resp: ', res);
 
       setUser(res.user);
     } catch {
@@ -28,12 +27,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login: AuthContextType['login'] = async (data) => {
     const res = await authApi.login(data);
-    console.log('🚀 ~ login ~ res:', res);
     setUser(res.user);
   };
   const register: AuthContextType['register'] = async (data) => {
     const res = await authApi.register(data);
-    console.log('🚀 ~ register ~ res:', res);
     setUser(res.user);
   };
   const logout: AuthContextType['logout'] = async () => {
