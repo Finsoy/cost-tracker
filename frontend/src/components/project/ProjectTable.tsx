@@ -1,19 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useProjects } from '@/contexts/project/ProjectContext';
-import { useMemo, useState } from 'react';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import {
-  Table,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { Calendar as CalendarIcon, Edit, Save, X, Trash2, Plus } from 'lucide-react';
+import { Table, TableCaption, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { TableWrapperHeader } from './TableWrapperHeader';
 import { TableBody } from './TableBody';
 import { TableFooter } from './TableFooter';
@@ -43,10 +30,10 @@ export const ProjectTable = () => {
         <TableHeader>
           <TableRow>
             <TableHead className="w-[30%]">Name</TableHead>
-            <TableHead className="w-[25%]">Date</TableHead>
-            <TableHead className="w-[15%]">BYN</TableHead>
-            <TableHead className="w-[15%]">USD</TableHead>
-            <TableHead className="w-[15%]"></TableHead>
+            <TableHead className="w-[37%]">Date</TableHead>
+            <TableHead className="w-[13%]">BYN</TableHead>
+            <TableHead className="w-[13%]">USD</TableHead>
+            <TableHead className="w-[7%]"></TableHead>
           </TableRow>
         </TableHeader>
 

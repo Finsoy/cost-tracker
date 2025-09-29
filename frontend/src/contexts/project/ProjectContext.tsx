@@ -23,14 +23,32 @@ export const ProjectsProvider: FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   const addItem: ProjectsContext['addItem'] = (projectId, newItem) => {
-    const project = getProjectById(projectId);
-    console.log('🚀 ~ project:', project);
-
     setProjects((prev) => {
       return prev.map((proj) => {
         if (proj.id === projectId) {
           const newItems = [...(proj.items || []), { ...newItem, id: uuid() }] as ProjectItem[];
           return { ...proj, items: newItems } as ProjectType;
+        } else {
+          return proj;
+        }
+      });
+    });
+  };
+
+  const updateItem: ProjectsContext['updateItem'] = (projectId, itemId, payload) => {
+    setProjects((prev) => {
+      return prev.map((proj) => {
+        if (proj.id === projectId) {
+          const newItems = proj.items.map((item) => {
+            if (item.id === itemId) {
+              return { ...item, ...payload };
+            } else {
+              return item;
+            }
+          });
+          console.log('🚀 ~ newItems:', newItems);
+
+          return { ...proj, items: newItems };
         } else {
           return proj;
         }
@@ -57,7 +75,15 @@ export const ProjectsProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   return (
     <ProjectsContext.Provider
-      value={{ projects, addProject, deleteProject, addItem, getProjectById, deleteItem }}
+      value={{
+        projects,
+        addProject,
+        deleteProject,
+        addItem,
+        getProjectById,
+        deleteItem,
+        updateItem,
+      }}
     >
       {children}
     </ProjectsContext.Provider>

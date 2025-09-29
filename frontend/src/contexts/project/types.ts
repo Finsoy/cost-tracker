@@ -20,7 +20,8 @@ export type ProjectsContext = {
   projects: ProjectType[];
   addProject: (projectName: string) => void;
   deleteProject: (id: string) => void;
-  addItem: (projectId: Maybe<string>, newItem: Partial<Omit<ProjectItem, 'id'>>) => void;
   getProjectById: (id: Maybe<string>) => Maybe<ProjectType>;
+  addItem: (projectId: Maybe<string>, newItem: Partial<Omit<ProjectItem, 'id'>>) => void;
   deleteItem: (projectId: Maybe<string>, itemId: Maybe<string>) => void;
+  updateItem: (projectId: Maybe<string>, itemId: Maybe<string>, payload: Partial<Omit<ProjectItem, 'id'>>) => void;
 };
