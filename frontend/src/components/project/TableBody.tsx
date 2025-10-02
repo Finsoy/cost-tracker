@@ -12,7 +12,7 @@ export const TableBody = ({ items, handleDelete }: Props) => {
   return (
     <TBody>
       {items.map((item) => (
-        <TableRow item={item} handleDelete={() => handleDelete(item.id)} />
+        <TableRow key={item.id} item={item} handleDelete={() => handleDelete(item.id)} />
       ))}
     </TBody>
   );

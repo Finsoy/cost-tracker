@@ -9,9 +9,9 @@ export const ProjectTable = () => {
   const { id: projectId } = useParams<{ id: string }>();
   const { addItem, getProjectById, deleteItem } = useProjects();
 
-  const project = getProjectById(projectId);
+  const project = projectId && getProjectById(projectId);
 
-  if (!project) return null;
+  if (!project || !projectId) return null;
 
   const handleAdd = () => {
     const todayIso = new Date().toISOString();

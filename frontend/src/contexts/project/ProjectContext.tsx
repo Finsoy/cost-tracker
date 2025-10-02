@@ -22,6 +22,15 @@ export const ProjectsProvider: FC<{ children: ReactNode }> = ({ children }) => {
     setProjects((prev) => prev.filter((proj) => proj.id !== id));
   };
 
+  const updateProject = (projectId: string, payload: Partial<Omit<ProjectType, 'id'>>) => {
+    setProjects((prev) => {
+      return prev.map((proj) => {
+        if (proj.id !== projectId) return proj;
+        return { ...proj, ...payload };
+      });
+    });
+  };
+
   const addItem: ProjectsContext['addItem'] = (projectId, newItem) => {
     setProjects((prev) => {
       return prev.map((proj) => {
@@ -36,24 +45,20 @@ export const ProjectsProvider: FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   const updateItem: ProjectsContext['updateItem'] = (projectId, itemId, payload) => {
-    setProjects((prev) => {
-      return prev.map((proj) => {
-        if (proj.id === projectId) {
-          const newItems = proj.items.map((item) => {
-            if (item.id === itemId) {
-              return { ...item, ...payload };
-            } else {
-              return item;
-            }
-          });
-          console.log('🚀 ~ newItems:', newItems);
+    const project = getProjectById(projectId);
+    if (!project) return;
 
-          return { ...proj, items: newItems };
-        } else {
-          return proj;
-        }
-      });
+    const updatedItems = project.items.map((item) => {
+      if (item.id === itemId) {
+        return { ...item, ...payload };
+      } else {
+        return item;
+      }
     });
+
+    const { totalByn, totalUsd } = calculateTotals(updatedItems);
+
+    updateProject(projectId, { items: updatedItems, totalByn, totalUsd });
   };
 
   const getProjectById: ProjectsContext['getProjectById'] = (id) => {
@@ -64,14 +69,29 @@ export const ProjectsProvider: FC<{ children: ReactNode }> = ({ children }) => {
     setProjects((prev) =>
       prev.map((proj) => {
         if (proj.id === projectId) {
-          const newItems = (proj.items || []).filter((item) => item.id !== itemId);
-          return { ...proj, items: newItems };
+          const updatedItems = (proj.items || []).filter((item) => item.id !== itemId);
+          const { totalByn, totalUsd } = calculateTotals(updatedItems);
+          return { ...proj, items: updatedItems, totalByn, totalUsd };
         } else {
           return proj;
         }
       }),
     );
   };
+
+  const calculateTotals = (items: ProjectItem[]) => {
+    const totalByn = items.reduce((acc, item) => acc + item.byn, 0);
+    const totalUsd = items.reduce((acc, item) => acc + item.usd, 0);
+    return { totalByn, totalUsd };
+  };
+
+  // const recomputeTotal = (projectId: string): void => {
+  //   const project = getProjectById(projectId);
+  //   if (!project) return;
+
+  //   const { totalByn, totalUsd } = calculateTotals(project.items);
+  //   updateProject(projectId, { totalByn, totalUsd });
+  // };
 
   return (
     <ProjectsContext.Provider

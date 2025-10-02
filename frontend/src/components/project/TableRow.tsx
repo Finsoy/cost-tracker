@@ -21,16 +21,19 @@ export const TableRow = ({ item, handleDelete }: Props) => {
 
   const [isEditing, setIsEditing] = useState(false);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { id, ...itemWithoutId } = item;
+  const { id: itemId, ...itemWithoutId } = item;
   const [draft, setDraft] = useState<Partial<Omit<ProjectItem, 'id'>>>(itemWithoutId);
+
+  if (!projectId) {
+    return null;
+  }
 
   const toggleIsEditing = () => {
     setIsEditing((prev) => !prev);
   };
 
   const handleSave = () => {
-    updateItem(projectId, item.id, draft);
+    updateItem(projectId, itemId, draft);
     setIsEditing(false);
   };
 
@@ -40,7 +43,7 @@ export const TableRow = ({ item, handleDelete }: Props) => {
   };
 
   return (
-    <TRow key={item.id}>
+    <TRow key={itemId}>
       <NameCell isEditing={isEditing} draft={draft} setDraft={setDraft} />
       <DateCell date={item.date} isEditing={isEditing} draft={draft} setDraft={setDraft} />
       <CurrencyCell
